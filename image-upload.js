@@ -29,5 +29,51 @@ let dropArea = document.getElementById('drop-area')
   function unhighlight(e) {
     dropArea.classList.remove('highlight')
   }
+
+  dropArea.addEventListener('drop', handleDrop, false)
+
+function handleDrop(e) {
+  let dt = e.dataTransfer
+  let files = dt.files
+
+  handleFiles(files)
+}
+function handleFiles(files) {
+    ([...files]).forEach(uploadFile)
+  }
+
+  function uploadFile(file) {
+    var url = 'YOUR URL HERE'
+    var xhr = new XMLHttpRequest()
+    var formData = new FormData()
+    xhr.open('POST', url, true)
   
+    xhr.addEventListener('readystatechange', function(e) {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        // Done. Inform the user
+      }
+      else if (xhr.readyState == 4 && xhr.status != 200) {
+        // Error. Inform the user
+      }
+    })
+  
+    formData.append('file', file)
+    xhr.send(formData)
+  }
+
+  function previewFile(file) {
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = function() {
+      let img = document.createElement('img')
+      img.src = reader.result
+      document.getElementById('gallery').appendChild(img)
+    }
+  }
+  function handleFiles(files) {
+    files = [...files]
+    files.forEach(uploadFile)
+    files.forEach(previewFile)
+  }
+    
   
