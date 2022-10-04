@@ -1,36 +1,36 @@
 let dropArea = document.getElementById('drop-area')
 
-  dropArea.addEventListener('dragenter', handlerFunction, false)
-  dropArea.addEventListener('dragleave', handlerFunction, false)
-  dropArea.addEventListener('dragover', handlerFunction, false)
-  dropArea.addEventListener('drop', handlerFunction, false)
+dropArea.addEventListener('dragenter', handlerFunction, false)
+dropArea.addEventListener('dragleave', handlerFunction, false)
+dropArea.addEventListener('dragover', handlerFunction, false)
+dropArea.addEventListener('drop', handlerFunction, false)
 
   ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, preventDefaults, false)
   })
-  
-  function preventDefaults (e) {
-    e.preventDefault()
-    e.stopPropagation()
-  }
 
-  ;['dragenter', 'dragover'].forEach(eventName => {
-    dropArea.addEventListener(eventName, highlight, false)
-  })
-  
+function preventDefaults(e) {
+  e.preventDefault()
+  e.stopPropagation()
+}
+
+;['dragenter', 'dragover'].forEach(eventName => {
+  dropArea.addEventListener(eventName, highlight, false)
+})
+
   ;['dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, unhighlight, false)
   })
-  
-  function highlight(e) {
-    dropArea.classList.add('highlight')
-  }
-  
-  function unhighlight(e) {
-    dropArea.classList.remove('highlight')
-  }
 
-  dropArea.addEventListener('drop', handleDrop, false)
+function highlight(e) {
+  dropArea.classList.add('highlight')
+}
+
+function unhighlight(e) {
+  dropArea.classList.remove('highlight')
+}
+
+dropArea.addEventListener('drop', handleDrop, false)
 
 function handleDrop(e) {
   let dt = e.dataTransfer
@@ -39,41 +39,40 @@ function handleDrop(e) {
   handleFiles(files)
 }
 function handleFiles(files) {
-    ([...files]).forEach(uploadFile)
-  }
+  ([...files]).forEach(uploadFile)
+}
 
-  function uploadFile(file) {
-    var url = 'YOUR URL HERE'
-    var xhr = new XMLHttpRequest()
-    var formData = new FormData()
-    xhr.open('POST', url, true)
-  
-    xhr.addEventListener('readystatechange', function(e) {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        // Done. Inform the user
-      }
-      else if (xhr.readyState == 4 && xhr.status != 200) {
-        // Error. Inform the user
-      }
-    })
-  
-    formData.append('file', file)
-    xhr.send(formData)
-  }
+function uploadFile(file) {
+  var url = 'YOUR URL HERE'
+  var xhr = new XMLHttpRequest()
+  var formData = new FormData()
+  xhr.open('POST', url, true)
 
-  function previewFile(file) {
-    let reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onloadend = function() {
-      let img = document.createElement('img')
-      img.src = reader.result
-      document.getElementById('gallery').appendChild(img)
+  xhr.addEventListener('readystatechange', function (e) {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      // Done. Inform the user
     }
+    else if (xhr.readyState == 4 && xhr.status != 200) {
+      // Error. Inform the user
+    }
+  })
+
+  formData.append('file', file)
+  xhr.send(formData)
+}
+
+function previewFile(file) {
+  let reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onloadend = function () {
+    let img = document.createElement('img')
+    img.src = reader.result
+    document.getElementById('gallery').appendChild(img)
   }
-  function handleFiles(files) {
-    files = [...files]
-    files.forEach(uploadFile)
-    files.forEach(previewFile)
-  }
-    
-  
+}
+function handleFiles(files) {
+  files = [...files]
+  files.forEach(uploadFile)
+  files.forEach(previewFile)
+}
+
